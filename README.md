@@ -6,7 +6,7 @@ Most "write me a story" interactions jump straight to acceptance criteria for wh
 
 ## What it does
 
-1. **Detects where stories land** per-project (GitHub Issues, markdown files, or a `pm.yaml`) and remembers the choice in the project's `CLAUDE.md`.
+1. **Detects where stories land** per-project (GitHub Issues or markdown files) and remembers the choice in the project's `CLAUDE.md`.
 2. **Probes intent** at a configurable depth (light / medium / heavy, stored in memory per repo).
 3. **Investigates prior art** — existing issues, ADRs, recent commits, and project infrastructure — so drafts reference reusable pieces instead of implying greenfield work.
 4. **Optionally consults Gemini** via the `ask-gemini` skill when a problem is genuinely ambiguous.

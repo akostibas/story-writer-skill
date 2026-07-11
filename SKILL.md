@@ -26,11 +26,10 @@ Everything else (acceptance criteria, non-goals, risks, etc.) is recommended but
 Stories land in different places per project. On first invocation in a repo:
 
 1. Check the project's `CLAUDE.md` (and any nested `CLAUDE.md` files) for a `## Story Output` section or equivalent note.
-2. If absent, look for signals: `docs/pm.yaml` (pm skill in use), `.github/` (GitHub Issues), `docs/stories/` or `docs/issues/` (markdown files).
+2. If absent, look for signals: `.github/` (GitHub Issues), `docs/stories/` or `docs/issues/` (markdown files).
 3. If still ambiguous, **ask the user**:
    - GitHub Issues via `gh`
    - Markdown file in `docs/stories/` (or similar path they specify)
-   - `docs/pm.yaml` entry (defer to the `pm` skill for the write)
 4. **After the user answers, propose adding a short note to the project's `CLAUDE.md`** so future sessions skip this step. Example:
    ```markdown
    ## Story Output
@@ -45,7 +44,7 @@ Memory slug: `story-writer-depth-<repo-name>`. Values: `light`, `medium`, `heavy
 
 - **light** — 1–2 clarifying questions, then draft. Skip prior-art search and Gemini.
 - **medium** (default) — confirm understanding with 2–3 questions, offer prior-art investigation and Gemini as opt-in.
-- **heavy** — always investigate prior art, always offer Gemini, expect to iterate before drafting.
+- **heavy** — always investigate prior art, always offer Gemini, lean toward offering a design simulation (step 7.5) for anything behaviorally complex, expect to iterate before drafting.
 
 If the user expresses a preference mid-session ("be more thorough next time", "this is getting too long"), update the memory.
 
@@ -94,7 +93,7 @@ For parent + children:
 
 1. Write the parent story with the **problem, done-when (epic-level), and a list of child stories**.
 2. Each child is independently implementable: distinct `touches:` paths, own acceptance criteria, minimal coupling.
-3. If `agent-mail` is available and the user wants parallel execution, mention that a leader agent can orchestrate via agent-mail — but don't launch anything from this skill. Briefing/dispatch is the `pm` skill's job (or the user's call).
+3. If `agent-mail` is available and the user wants parallel execution, mention that a leader agent can orchestrate via agent-mail — but don't launch anything from this skill. Briefing/dispatch is the user's call.
 
 ### 7. Draft
 
@@ -129,13 +128,27 @@ Use this template. Drop sections that don't add value for the story at hand.
 
 Parent stories add a `## Children` section listing child story titles (filled in with issue numbers after creation).
 
+### 7.5 Simulate (optional, behaviorally-complex stories)
+
+For stories with **stateful or conditional behavior** — config/toggles, state machines, multi-actor flows, permission/availability gating, anything with meaningful branches — **offer** to write a worked example before finalizing. Don't do it automatically, and never for a one-line fix.
+
+> "This has real branching. Want me to simulate the accept/reject flow with the state changes annotated? It usually shakes out decisions the ACs haven't pinned down."
+
+A good simulation:
+
+- Walks **one concrete scenario step by step** (a short conversation, or an event/state trace).
+- Shows **at least two branches** (accept vs. reject, success vs. failure, resource available vs. not).
+- **Annotates the state change at each step** — the before/after of the relevant memory keys, DB rows, config values, or status transitions.
+- **Calls out any decision the simulation forces** that the ACs hadn't settled (e.g. does "decline" write an explicit state or just leave it absent? are offers one-shot or recurring?). Fold those answers back into the ACs.
+
+Where it goes: prefer embedding it in the story as an **`## Example walkthrough`** section — it doubles as a behavioral spec for the implementer. If it's only for your own design-checking, keep it as a scratch artifact and drop it.
+
 ### 8. Write to target
 
 Per step 1's detected target:
 
 - **GitHub Issues**: `gh issue create --title ... --body ...` (HEREDOC for the body). Apply labels if the project uses them — check `gh label list`.
 - **Markdown**: write to the agreed path with a date-prefixed or numbered filename.
-- **pm.yaml**: hand off to the `pm` skill rather than writing directly.
 
 For parent + children, file the parent first, then children referencing the parent's issue number / path.
 
@@ -159,7 +172,6 @@ These are optional — the skill detects whether each is available and degrades 
   Repo: https://github.com/akostibas/ask-gemini-skill
 - **`agent-mail`** — mentioned to the user when a parent story is suited to parallel agent execution.
   Repo: https://github.com/akostibas/agent-mail-skill
-- **`pm`** — for projects that use a `docs/pm.yaml` editorial layer; defer writes there. This skill is currently repo-specific (Shannon-Assistant) rather than a standalone install.
 
 ## Files in this skill
 
