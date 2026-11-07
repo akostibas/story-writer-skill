@@ -22,10 +22,10 @@ See [`SKILL.md`](SKILL.md) for the full workflow.
 ```bash
 git clone https://github.com/akostibas/story-writer-skill.git
 cd story-writer-skill
-bin/install
+make install
 ```
 
-`bin/install` symlinks the repo into `~/.claude/skills/story-writer/`. It's idempotent and won't clobber an existing non-symlink without `--force`. Restart Claude Code after installing.
+`make install` copies the skill into `~/.claude/skills/story-writer/`, replacing any previous install. Restart Claude Code after installing.
 
 ## Optional companion skills
 

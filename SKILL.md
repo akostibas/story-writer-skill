@@ -176,4 +176,3 @@ These are optional — the skill detects whether each is available and degrades 
 ## Files in this skill
 
 - `SKILL.md` — this file.
-- `bin/install` — symlinks the skill into `~/.claude/skills/story-writer`.
