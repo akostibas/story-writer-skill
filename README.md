@@ -1,5 +1,7 @@
 # story-writer
 
+> **Archived.** The story writer now lives in a private tool and is no longer updated here.
+
 A [Claude Code](https://docs.claude.com/en/docs/claude-code) skill for writing quality user stories / issues.
 
 Most "write me a story" interactions jump straight to acceptance criteria for whatever the user happened to say first. This skill resists that — it probes intent, sweeps for prior art, and only drafts once the problem is sharp. For larger work it produces a parent story with independently-implementable children.
